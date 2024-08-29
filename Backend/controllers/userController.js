@@ -1,10 +1,23 @@
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const { validationResult } = require('express-validator');
+
 
 // Register a new user
 exports.registerUser = async (req, res) => {
     const { username, email, password } = req.body;
+
+    // Validate request data
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Check if any fields are empty
+    if (!username || !email || !password) {
+        return res.status(400).json({ msg: 'Please provide all required fields' });
+    }
 
     try {
         // Check if the user already exists
@@ -28,6 +41,7 @@ exports.registerUser = async (req, res) => {
 
         res.status(201).json({ msg: 'User registered successfully' });
     } catch (error) {
+        console.error('Error registering user:', error);
         res.status(500).json({ msg: 'Server error' });
     }
 };
@@ -54,13 +68,14 @@ exports.loginUser = async (req, res) => {
             user: {
                 id: user.id,
                 role: user.role,
+                username: user.username
             },
         };
 
         jwt.sign(
             payload,
             process.env.JWT_SECRET,
-            { expiresIn: '1h' },
+            { expiresIn: '3h' },
             (err, token) => {
                 if (err) throw err;
                 res.json({ token });
@@ -70,6 +85,70 @@ exports.loginUser = async (req, res) => {
         res.status(500).json({ msg: 'Server error' });
     }
 };
+
+exports.createWaiter = async (req, res) => {
+    // Validate request data (optional)
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+  
+    const { username, email, password } = req.body;
+  
+    try {
+      // Check if user already exists
+      const existingUser = await User.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({ message: 'User already exists' });
+      }
+  
+      // Hash the password
+      const hashedPassword = await bcrypt.hash(password, 10);
+  
+      // Create new user with the role 'waiter'
+      const newUser = new User({
+        username,
+        email,
+        password: hashedPassword,
+        role: 'waiter'
+      });
+  
+      // Save the user to the database
+      await newUser.save();
+  
+      // Send a response back to the client
+      res.status(201).json({
+        message: 'Waiter created successfully',
+        user: {
+          username: newUser.username,
+          email: newUser.email,
+          role: newUser.role
+        }
+      });
+    } catch (error) {
+      console.error('Error creating waiter:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
+
+
+//Get all waiters
+  exports.getAllWaiters = async (req, res) => {
+    try {
+      // Find all users with the role 'waiter'
+      const waiters = await User.find({ role: 'waiter' });
+  
+      // Send a response back to the client
+      res.status(200).json({
+        message: 'Waiters retrieved successfully',
+        waiters
+      });
+    } catch (error) {
+      console.error('Error retrieving waiters:', error);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
+
 
 // Update user details
 exports.updateUser = async (req, res) => {

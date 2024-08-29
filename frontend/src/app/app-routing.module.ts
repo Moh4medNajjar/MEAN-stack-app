@@ -14,7 +14,7 @@ import { ProductsComponent } from './products/products.component';
 import { WaiterDashboardComponent } from './waiter-dashboard/waiter-dashboard.component';
 
 const routes: Routes = [
-  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: '', redirectTo: '/index', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
   { path: 'welcome', component: IndexComponent },
   { path: 'register', component: RegisterComponent },
@@ -27,6 +27,7 @@ const routes: Routes = [
   { path: 'client-dashboard', component: ClientDashboardComponent },
   { path: 'products', component: ProductsComponent },
   { path: 'incoming-orders', component: WaiterDashboardComponent },
+  { path: 'index', component: IndexComponent },
 ];
 
 @NgModule({

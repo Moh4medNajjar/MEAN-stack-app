@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-register',
@@ -10,7 +12,6 @@ export class RegisterComponent implements OnInit {
   registerForm!: FormGroup;
   submitted = false;
 
-  constructor(private formBuilder: FormBuilder) { }
 
   ngOnInit(): void {
     this.registerForm = this.formBuilder.group({
@@ -22,15 +23,34 @@ export class RegisterComponent implements OnInit {
 
   get f() { return this.registerForm.controls; }
 
-  onSubmit() {
+  user = {
+    username: '',
+    email: '',
+    password: ''
+  };
+
+  constructor(private authService: AuthService, private router: Router, private formBuilder: FormBuilder) { }
+
+  onRegister() {
     this.submitted = true;
 
-    // stop here if form is invalid
+    // Stop if the form is invalid
     if (this.registerForm.invalid) {
       return;
     }
 
-    // display form values on success
-    alert('SUCCESS!! :-)\n\n' + JSON.stringify(this.registerForm.value, null, 4));
+    // Create a user object from form values
+    const user = this.registerForm.value;
+
+    this.authService.register(user).subscribe(
+      response => {
+        console.log('Registration successful', response);
+        this.router.navigate(['/login']);
+      },
+      error => {
+        console.error('Registration failed', error);
+      }
+    );
   }
+
 }

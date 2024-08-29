@@ -6,7 +6,9 @@ const {
     updateUser,
     deleteUser,
     getAllUsers,
-    getUserById
+    getUserById,
+    getAllWaiters, // Add this
+    createWaiter // Add this
 } = require('../controllers/userController');
 const authMiddleware = require('../middleware/authMiddleware'); // Assuming you have auth middleware
 
@@ -15,6 +17,10 @@ router.post('/register', registerUser);
 
 // User login
 router.post('/login', loginUser);
+
+router.get('/waiters', getAllWaiters);
+
+router.post('/waiters', createWaiter);
 
 // Update user details
 router.put('/update', authMiddleware, updateUser);
