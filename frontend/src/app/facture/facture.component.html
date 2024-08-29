@@ -1,0 +1,39 @@
+<div class="container-fluid">
+  <div class="card">
+    <h4 class="text-center mb-3">Facture</h4>
+    <div style="height: 2px; background-color: rgba(128, 128, 128, 0.359); width: 100%; margin-bottom: 20px;"></div>
+    <p><strong>Numéro de commande :</strong> 12345</p>
+    <p><strong>Numéro de table :</strong> 12</p>
+    <p><strong>Date :</strong> 27 Août 2024</p>
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th>Article</th>
+          <th>Quantité</th>
+          <th>Prix Unitaire</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Plat 1</td>
+          <td>1</td>
+          <td>€12.00</td>
+          <td>€12.00</td>
+        </tr>
+        <tr>
+          <td>Boisson 1</td>
+          <td>2</td>
+          <td>€3.50</td>
+          <td>€7.00</td>
+        </tr>
+        <!-- Ajouter d'autres articles selon la commande -->
+        <tr>
+          <td colspan="3" class="text-right"><strong>Total :</strong></td>
+          <td>€19.00</td>
+        </tr>
+      </tbody>
+    </table>
+    <button class="btn btn-success btn-block btn-print" (click)="printInvoice()">Imprimer la facture</button>
+  </div>
+</div>

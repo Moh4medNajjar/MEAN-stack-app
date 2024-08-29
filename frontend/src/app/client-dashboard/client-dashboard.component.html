@@ -1,0 +1,43 @@
+<div class="container-fluid">
+  <div class="card">
+    <div class="category-container">
+      <div class="category-list me-4">
+        <button
+          *ngFor="let category of categories"
+          [class.active]="category === selectedCategory"
+          (click)="selectCategory(category)"
+        >
+          {{ category | titlecase }}
+        </button>
+      </div>
+      <div class="dishes-container">
+        <div
+          *ngFor="let dish of dishes"
+          class="dish-card"
+        >
+          <h5>{{ dish.name }}</h5>
+          <p>{{ dish.description }}</p>
+          <p class="price">€{{ dish.price.toFixed(2) }}</p>
+          <div class="quantity-controls">
+            <button (click)="decreaseQuantity(dish)">-</button>
+            <input type="number" [value]="dish.quantity" readonly />
+            <button (click)="increaseQuantity(dish)">+</button>
+          </div>
+          <button class="btn btn-add-to-cart" (click)="addToCart(dish)">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Modal for confirming add to cart -->
+    <div *ngIf="showModal" class="modal-background" (click)="closeModal()">
+      <div class="modal-content" (click)="$event.stopPropagation()">
+        <h4>Item Added to Cart</h4>
+        <p>The item has been successfully added to your cart.</p>
+        <div class="modal-buttons">
+          <button class="btn btn-primary" (click)="navigateToCart()">Go to Cart</button>
+          <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,74 @@
+.container-fluid {
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card {
+  border-radius: 15px;
+  border: none;
+  background-color: #212529;
+  color: white;
+  width: 100%;
+  max-width: 600px;
+  padding: 20px;
+  height: fit-content; /* Fixed height for the card */
+  overflow-y: auto; /* Scroll if content exceeds height */
+}
+
+.payment-methods {
+  margin-bottom: 20px;
+}
+
+.form-check-input {
+  margin-right: 10px;
+}
+
+.credit-card-details,
+.cash-payment-info {
+  margin-top: 20px;
+}
+
+.form-group {
+  margin-top: 15px;
+}
+
+.form-group label {
+  margin-bottom: 5px; /* Margin between label and input */
+}
+
+input.form-control {
+  background-color: #343a40; /* Dark background for input */
+  border: 1px solid #495057; /* Dark border */
+  color: white; /* Text color */
+}
+
+.button-group {
+  display: flex;
+  flex-direction: column;
+  align-items: center; /* Center buttons */
+  margin-top: 20px;
+}
+
+.btn {
+  width: 100%; /* Full width buttons */
+  padding: 10px;
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: center;
+}
+
+.btn-primary {
+  background-color: #00aaff; /* Blue sky color */
+  border: none;
+}
+
+.btn-success {
+  background-color: #28a745; /* Green color for success */
+  border: none;
+}
+
+.btn-block {
+  margin-top: 10px;
+}

@@ -1,0 +1,72 @@
+.container-fluid {
+  padding: 10px 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.card {
+  height: 600px;
+  border: none;
+  background-color: #1F1F1F;
+  color: white;
+  width: 100%;
+  max-width: 800px; /* Adjusted width */
+  padding: 20px; /* Adjusted padding */
+  overflow-y: scroll;
+}
+
+.card::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+.card::-webkit-scrollbar-thumb {
+  background-color: #444; /* Color of the scrollbar thumb */
+  border-radius: 10px; /* Rounded corners */
+  transition: background-color 0.3s ease; /* Smooth transition */
+}
+
+.card::-webkit-scrollbar-thumb:hover {
+  background-color: #666; /* Color on hover */
+}
+
+.card::-webkit-scrollbar-track {
+  background-color: #212529; /* Background of the track */
+  border-radius: 10px; /* Rounded corners */
+}
+
+table {
+  margin-top: 20px;
+  height: 100%;
+
+}
+
+
+.table thead th {
+  border-bottom: 2px solid #444;
+  padding: 10px;
+}
+
+.table tbody td {
+  border-top: 1px solid #1F1F1F;
+  padding: 8px;
+}
+
+.even-row {
+  background-color: #1F1F1F; /* Darker background for even rows */
+}
+
+.odd-row {
+  background-color: #1F1F1F!important; /* Slightly lighter background for odd rows */
+}
+
+.btn-danger {
+  padding: 5px 10px;
+}
+
+.btn-sm {
+  font-size: 12px;
+}
+
+.fa-trash-can {
+  font-size: 16px; /* Adjust icon size */
+}

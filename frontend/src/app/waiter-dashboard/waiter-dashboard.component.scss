@@ -1,0 +1,50 @@
+/* Styling for the card */
+.card {
+  border-radius: 15px;
+  border: none;
+  background-color: #212529;
+  color: white;
+  width: 90%; /* Adjusted width */
+  max-width: 100%; /* Increased maximum width */
+  margin: 0 auto; /* Center the card horizontally */
+  padding: 20px;
+}
+
+/* Styling for the table */
+.table {
+  width: 100%; /* Full width of the card */
+  table-layout: fixed; /* Fixed table layout for consistent column width */
+}
+
+/* Button styling */
+.btn {
+  margin-right: 5px;
+}
+
+.btn-sm {
+  padding: 5px 10px;
+}
+
+/* Badge styling */
+.badge {
+  padding: 5px 10px;
+  font-size: 0.9em;
+}
+.bg-success-badge {
+  background-color: #198754;
+  border-radius: 3px;
+  padding: 4px 8px;
+}
+
+.bg-danger-badge {
+  background-color: #DC3545;
+  border-radius: 3px;
+  padding: 4px 8px;
+}
+
+.bg-warning-badge {
+  background-color: #FFC107;
+  border-radius: 3px;
+  padding: 4px 8px;
+  color:#1F1F1F
+}

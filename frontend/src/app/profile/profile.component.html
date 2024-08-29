@@ -1,0 +1,59 @@
+<!-- User Profile Component HTML -->
+<div class="container-fluid">
+  <div class="card">
+    <h2 class="text-center mb-4">User Profile</h2>
+    <div class="profile-info mb-4">
+      <div class="profile-item">
+        <strong class="me-2">Username:</strong>
+        <span>{{ user.username }}</span>
+      </div>
+      <div class="profile-item">
+        <strong class="me-2">Email:</strong>
+        <span>{{ user.email }}</span>
+      </div>
+      <div class="profile-item">
+        <strong>Password:</strong>
+        <div class="password-container">
+          <input type="text" [type]="passwordVisible ? 'text' : 'password'" [value]="user.password" readonly>
+          <button (click)="togglePasswordVisibility()" class="btn btn-outline-secondary">
+            {{ passwordVisible ? 'Hide' : 'Show' }}
+          </button>
+        </div>
+      </div>
+    </div>
+    <div class="button-group text-center">
+      <button (click)="openChangeEmailModal()" class="btn btn-secondary me-2">Change Email</button>
+      <button (click)="openChangePasswordModal()" class="btn btn-warning ">Change Password</button>
+    </div>
+  </div>
+
+  <!-- Email Change Modal -->
+  <div *ngIf="showChangeEmailModal" class="modal-overlay">
+    <div class="modal-content">
+      <h3 class="mb-4">Change Email</h3>
+      <form (ngSubmit)="onChangeEmail()" #changeEmailForm="ngForm">
+        <div class="form-group mb-3">
+          <label for="newEmail" class="mb-3">New Email</label>
+          <input type="email" id="newEmail" class="form-control" [(ngModel)]="newEmail" name="newEmail" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" (click)="closeChangeEmailModal()">Cancel</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Password Change Modal -->
+  <div *ngIf="showChangePasswordModal" class="modal-overlay">
+    <div class="modal-content">
+      <h3 class="mb-4">Change Password</h3>
+      <form (ngSubmit)="onChangePassword()" #changePasswordForm="ngForm">
+        <div class="form-group mb-3">
+          <label for="newPassword" class="mb-3">New Password</label>
+          <input type="password" id="newPassword" class="form-control" [(ngModel)]="newPassword" name="newPassword" required>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" (click)="closeChangePasswordModal()">Cancel</button>
+      </form>
+    </div>
+  </div>
+</div>

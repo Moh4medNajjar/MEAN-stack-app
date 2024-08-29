@@ -1,0 +1,36 @@
+import { NgModule } from '@angular/core';
+import { RouterModule, Routes } from '@angular/router';
+import { RegisterComponent } from './auth/register/register.component';
+import { LoginComponent } from './auth/login/login.component';
+import { IndexComponent } from './index/index.component';
+import { ProfileComponent } from './profile/profile.component';
+import { FactureComponent } from './facture/facture.component';
+import { UserManagementComponent } from './user-management/user-management.component';
+import { PanierComponent } from './panier/panier.component';
+import { PaymentComponent } from './payment/payment.component';
+import { OrderHistoryComponent } from './order-history/order-history.component';
+import { ClientDashboardComponent } from './client-dashboard/client-dashboard.component';
+import { ProductsComponent } from './products/products.component';
+import { WaiterDashboardComponent } from './waiter-dashboard/waiter-dashboard.component';
+
+const routes: Routes = [
+  { path: '', redirectTo: '/home', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
+  { path: 'welcome', component: IndexComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'profile', component: ProfileComponent },
+  { path: 'facture', component: FactureComponent },
+  { path: 'users', component: UserManagementComponent },
+  { path: 'panier', component: PanierComponent },
+  { path: 'payment', component: PaymentComponent },
+  { path: 'order-history', component: OrderHistoryComponent },
+  { path: 'client-dashboard', component: ClientDashboardComponent },
+  { path: 'products', component: ProductsComponent },
+  { path: 'incoming-orders', component: WaiterDashboardComponent },
+];
+
+@NgModule({
+  imports: [RouterModule.forRoot(routes)],
+  exports: [RouterModule]
+})
+export class AppRoutingModule { }
