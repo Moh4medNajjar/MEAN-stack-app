@@ -196,12 +196,12 @@ exports.getAllUsers = async (req, res) => {
     }
 };
 
-// Get a user by ID
-exports.getUserById = async (req, res) => {
+// Get a username by userID
+exports.getUsernameById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const user = await User.findById(id).select('-password');
+        const user = await User.findById(id).select('username');
         if (!user) {
             return res.status(404).json({ msg: 'User not found' });
         }
@@ -210,6 +210,8 @@ exports.getUserById = async (req, res) => {
         res.status(500).json({ msg: 'Server error' });
     }
 };
+
+
 
 
 

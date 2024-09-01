@@ -1,4 +1,5 @@
-<div class="container-fluid">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+<div class="container-fluid" style="min-height: 100vh;">
   <div class="card">
     <div class="category-container">
       <div class="category-list me-4">
@@ -9,12 +10,12 @@
         >
           {{ category | titlecase }}
         </button>
+        <button class="bg-success mt-4" (click)="navigateToCart()">
+          <i class="fas fa-shopping-cart me-2"></i>Go to cart
+        </button>
       </div>
       <div class="dishes-container">
-        <div
-          *ngFor="let dish of dishes"
-          class="dish-card"
-        >
+        <div *ngFor="let dish of dishes" class="dish-card">
           <h5>{{ dish.name }}</h5>
           <p>{{ dish.description }}</p>
           <p class="price">€{{ dish.price.toFixed(2) }}</p>

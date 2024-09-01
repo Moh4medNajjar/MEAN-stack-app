@@ -2,22 +2,22 @@ const express = require('express');
 const router = express.Router();
 const {
     addToCart,
-    getCart,
+    getCartItems,
     removeFromCart,
     clearCart
 } = require('../controllers/cartController');
-const authMiddleware = require('../middleware/authMiddleware'); // Assuming you have auth middleware
+
 
 // Add an item to the cart
-router.post('/add', authMiddleware, addToCart);
+router.post('/add', addToCart);
 
 // View the cart
-router.get('/', authMiddleware, getCart);
+router.get('/items/:username', getCartItems);
 
 // Remove an item from the cart
-router.delete('/remove', authMiddleware, removeFromCart);
+router.delete('/remove', removeFromCart);
 
 // Clear the cart
-router.delete('/clear', authMiddleware, clearCart);
+router.delete('/clear/:username', clearCart);
 
 module.exports = router;

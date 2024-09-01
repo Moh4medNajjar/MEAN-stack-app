@@ -1,7 +1,11 @@
-<div class="container-fluid">
+<div class="container-fluid" style="min-height: 100vh;">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <div class="card">
-    <h4 class="text-center">Your Cart</h4>
-
+    <div class="d-flex align-items-center justify-content-between">
+      <i class="fa fa-arrow-left fs-3 ms-2" routerLink="/client-dashboard" style="cursor: pointer"></i>
+      <h4 class="text-center">Your Cart</h4>
+      <div></div>
+    </div>
     <!-- Cart Items Section -->
     <div class="cart-items">
       <table class="table table-dark">
@@ -9,13 +13,13 @@
           <tr>
             <th>Item</th>
             <th>Quantity</th>
-            <th>Price</th>
+            <th>Unit Price</th>
             <th>Total</th>
           </tr>
         </thead>
         <tbody>
           <tr *ngFor="let item of cartItems">
-            <td>{{ item.name }}</td>
+            <td>{{ item.product }}</td>
             <td>{{ item.quantity }}</td>
             <td>{{ item.price | currency }}</td>
             <td>{{ item.quantity * item.price | currency }}</td>
@@ -37,7 +41,7 @@
 
     <!-- Action Buttons -->
     <div class="button-group">
-      <button class="btn btn-success btn-block" (click)="confirmOrder()">Confirm Order</button>
+      <button class="btn btn-success btn-block" (click)="createOrder()">Confirm Order</button>
       <button class="btn btn-primary btn-block" (click)="proceedToCheckout()">Proceed to Checkout</button>
     </div>
   </div>

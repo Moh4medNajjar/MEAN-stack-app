@@ -1,10 +1,11 @@
 .container-fluid {
   padding: 20px;
+  background-color: #1F1F1F;
 }
 
 .card {
   border: none;
-  background-color: #1c1c1c; /* Dark background */
+  background-color: #1F1F1F; /* Dark background */
   color: white;
   padding: 20px;
   border-radius: 15px;
@@ -41,4 +42,8 @@
 
 .btn {
   margin: 5px;
+}
+
+:host {
+  margin-top: 10px; // Adjust as needed
 }

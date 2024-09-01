@@ -1,21 +1,40 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { DishService } from '../services/dish.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-products',
   templateUrl: './products.component.html',
-  styleUrl: './products.component.scss'
+  styleUrls: ['./products.component.scss']
 })
-export class ProductsComponent {
-  products = [
-    { id: 1, name: 'Pizza', category: 'plats', price: 12.00 },
-    { id: 2, name: 'Coke', category: 'boissons', price: 2.50 },
-    // Add more products as needed
-  ];
+export class ProductsComponent implements OnInit {
+  dishes: any[] = [];
+  createProductForm!: FormGroup;
+  updateForm!: FormGroup;
 
   showCreateProductModal = false;
   showModifyProductModal = false;
   newProduct = { name: '', category: 'plats', price: 0 };
   currentProduct: any = null;
+
+  constructor(private formBuilder: FormBuilder, private dishService: DishService) {}
+
+  ngOnInit(): void {
+    this.loadDishes();
+    this.createProductForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      category: ['', Validators.required],
+      price: ['', [Validators.required, Validators.min(0)]]
+    });
+
+    this.updateForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      description: ['', Validators.required],
+      category: ['', Validators.required],
+      price: ['', [Validators.required, Validators.min(0)]]
+    });
+  }
 
   openCreateProductModal() {
     this.showCreateProductModal = true;
@@ -26,16 +45,26 @@ export class ProductsComponent {
     this.newProduct = { name: '', category: 'plats', price: 0 };
   }
 
-  createProduct() {
-    this.products.push({
-      id: this.products.length + 1,
-      ...this.newProduct
-    });
-    this.closeCreateProductModal();
+  createProduct(): void {
+    if (this.createProductForm.invalid) {
+      return;
+    }
+
+    this.dishService.createDish(this.createProductForm.value).subscribe(
+      response => {
+        console.log('Dish created successfully', response);
+        this.closeCreateProductModal();
+        this.loadDishes(); // Reload the dishes list after creating a new dish
+      },
+      error => {
+        console.error('Error creating dish', error);
+      }
+    );
   }
 
   openModifyProductModal(product: any) {
     this.currentProduct = { ...product };
+    this.updateForm.patchValue(this.currentProduct); // Populate the form with current product data
     this.showModifyProductModal = true;
   }
 
@@ -44,15 +73,46 @@ export class ProductsComponent {
     this.currentProduct = null;
   }
 
-  updateProduct() {
-    const index = this.products.findIndex(p => p.id === this.currentProduct.id);
-    if (index !== -1) {
-      this.products[index] = this.currentProduct;
+  onUpdateDish(): void {
+    if (this.updateForm.invalid) {
+      return;
     }
-    this.closeModifyProductModal();
+
+    const updatedDish = this.updateForm.value;
+
+    this.dishService.updateDish(this.currentProduct._id, updatedDish).subscribe(
+      data => {
+        console.log('Dish updated successfully', data);
+        this.loadDishes(); // Reload the list of dishes after update
+        this.closeModifyProductModal(); // Close the modal after update
+      },
+      error => {
+        console.error('Failed to update dish:', error);
+      }
+    );
   }
 
-  deleteProduct(productId: number) {
-    this.products = this.products.filter(p => p.id !== productId);
+  onDeleteDish(id: string): void {
+    this.dishService.deleteDish(id).subscribe(
+      () => {
+        console.log('Dish deleted successfully');
+        this.loadDishes(); // Reload the list of dishes after deletion
+      },
+      (error) => {
+        console.error('Failed to delete dish:', error);
+      }
+    );
+  }
+
+  loadDishes(): void {
+    this.dishService.getAllDishes().subscribe(
+      data => {
+        this.dishes = data;
+        console.log('Dishes loaded successfully:', this.dishes);
+      },
+      error => {
+        console.error('Failed to load dishes:', error);
+      }
+    );
   }
 }

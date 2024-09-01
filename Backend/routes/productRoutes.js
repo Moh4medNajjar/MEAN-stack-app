@@ -5,7 +5,8 @@ const {
     createProduct,
     updateProduct,
     deleteProduct,
-    getProductById
+    getProductById,
+    getProductsByCategory  // Add this import
 } = require('../controllers/productController');
 const authMiddleware = require('../middleware/authMiddleware'); // Assuming you have auth middleware
 
@@ -13,15 +14,18 @@ const authMiddleware = require('../middleware/authMiddleware'); // Assuming you 
 router.get('/', getAllProducts);
 
 // Create a new product
-router.post('/', authMiddleware, createProduct);
+router.post('/', createProduct);
 
 // Update a product
-router.put('/:id', authMiddleware, updateProduct);
+router.put('/:id', updateProduct);
 
 // Delete a product
-router.delete('/:id', authMiddleware, deleteProduct);
+router.delete('/:id', deleteProduct);
 
 // Get a product by ID
 router.get('/:id', getProductById);
+
+// Get products by category
+router.get('/category/:category', getProductsByCategory); // Add this route
 
 module.exports = router;

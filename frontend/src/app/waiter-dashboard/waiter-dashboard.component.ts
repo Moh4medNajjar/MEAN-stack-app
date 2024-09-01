@@ -1,26 +1,46 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { OrderService } from '../services/order.service';
+import { UserService } from '../services/user.service';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
   selector: 'app-waiter-dashboard',
   templateUrl: './waiter-dashboard.component.html',
-  styleUrl: './waiter-dashboard.component.scss'
+  styleUrls: ['./waiter-dashboard.component.scss'] // Corrected styleUrl to styleUrls
 })
-export class WaiterDashboardComponent {
-  orders = [
-    // Sample data
-    { tableNumber: 1, username: 'john_doe', details: 'Pizza, Soda', status: 'Being Prepared' },
-    { tableNumber: 2, username: 'jane_smith', details: 'Burger, Fries', status: 'Ready' }
-  ];
+export class WaiterDashboardComponent implements OnInit {
+  orders: any[] = [];
+  userNames: { [key: string]: string } = {}; // Object to map user IDs to usernames
 
-  markAsServed(order: any) {
-    order.status = 'Served';
+  constructor(
+    private ordersService: OrderService,
+    private userService: UserService
+  ) {}
+
+  ngOnInit(): void {
+    this.loadOrders();
   }
 
-  markAsReady(order: any) {
-    order.status = 'Ready';
+  loadOrders(): void {
+    this.ordersService.getOrders().subscribe(
+      (orders: any[]) => {
+        // Filter the orders to exclude those with status 'Served'
+        this.orders = orders.filter(order => order.status !== 'Served');
+        console.log("Filtered orders (excluding 'Served'): ", this.orders);
+      },
+      (error) => {
+        console.error('Error loading orders:', error);
+        // Optionally, you can set an error message to display in the UI
+        // this.errorMessage = 'Failed to load orders. Please try again later.';
+      }
+    );
   }
 
-  markAsBeingPrepared(order: any) {
-    order.status = 'Being Prepared';
-  }
+
+
+
+
+
+
+
 }

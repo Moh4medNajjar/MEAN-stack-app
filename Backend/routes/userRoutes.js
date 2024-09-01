@@ -6,7 +6,7 @@ const {
     updateUser,
     deleteUser,
     getAllUsers,
-    getUserById,
+    getUsernameById,
     getAllWaiters, // Add this
     createWaiter // Add this
 } = require('../controllers/userController');
@@ -23,15 +23,15 @@ router.get('/waiters', getAllWaiters);
 router.post('/waiters', createWaiter);
 
 // Update user details
-router.put('/update', authMiddleware, updateUser);
+router.put('/update', updateUser);
 
 // Delete a user
-router.delete('/delete/:id', authMiddleware, deleteUser);
+router.delete('/:id', deleteUser);
 
 // Get all users
-router.get('/', authMiddleware, getAllUsers);
+router.get('/', getAllUsers);
 
 // Get a user by ID
-router.get('/:id', authMiddleware, getUserById);
+router.get('/:id', getUsernameById);
 
 module.exports = router;

@@ -2,68 +2,85 @@ const Cart = require('../models/Cart');
 const Product = require('../models/Product');
 const User = require('../models/User');
 
-// Add an item to the cart
 exports.addToCart = async (req, res) => {
-    const { productId, quantity } = req.body;
-    const userId = req.user.id;
+    const { productName, quantity, price, username } = req.body;
+
+    console.log('Received request body:', req.body);
+
+    if (!productName || typeof quantity !== 'number' || quantity <= 0 || typeof price !== 'number' || price <= 0 || !username) {
+        return res.status(400).json({ msg: 'Invalid input' });
+    }
 
     try {
-        const product = await Product.findById(productId);
+        const product = await Product.findOne({ name: productName });
         if (!product) {
             return res.status(404).json({ msg: 'Product not found' });
         }
 
-        let cart = await Cart.findOne({ user: userId });
-
+        let cart = await Cart.findOne({ username: username });
         if (!cart) {
-            cart = new Cart({ user: userId, items: [] });
+            cart = new Cart({ username: username, items: [] });
         }
 
-        const itemIndex = cart.items.findIndex(item => item.product.toString() === productId);
+        console.log('Current cart items:', cart.items);
 
+        const itemIndex = cart.items.findIndex(item => item.product === productName);
         if (itemIndex > -1) {
-            // Product exists in the cart, update the quantity
+            console.log('Updating existing item:', cart.items[itemIndex]);
             cart.items[itemIndex].quantity += quantity;
+            cart.items[itemIndex].price = price;
         } else {
-            // Product does not exist in the cart, add as a new item
-            cart.items.push({ product: productId, quantity });
+            console.log('Adding new item:', { product: productName, quantity, price });
+            cart.items.push({ product: productName, quantity, price });
         }
 
+        console.log('Updated cart items:', cart.items);
         await cart.save();
         res.status(200).json(cart);
     } catch (error) {
-        res.status(500).json({ msg: 'Server error' });
+        console.error('Error adding to cart:', error);
+        res.status(500).json({ msg: 'Server error', error: error.message });
     }
 };
 
-// View the cart
-exports.getCart = async (req, res) => {
-    const userId = req.user.id;
+
+
+
+
+
+
+exports.getCartItems = async (req, res) => {
+    const { username } = req.params; // Extract username from URL parameters
 
     try {
-        const cart = await Cart.findOne({ user: userId }).populate('items.product');
+        // Find the user's cart
+        const cart = await Cart.findOne({ username: username }).populate('items.product'); // Adjust to populate product details
+
         if (!cart) {
             return res.status(404).json({ msg: 'Cart not found' });
         }
 
-        res.status(200).json(cart);
+        // Return cart items
+        res.status(200).json(cart.items);
     } catch (error) {
+        console.error(error);
         res.status(500).json({ msg: 'Server error' });
     }
 };
+
 
 // Remove an item from the cart
 exports.removeFromCart = async (req, res) => {
-    const { productId } = req.body;
-    const userId = req.user.id;
+    const { productName } = req.body;
+    const username = req.user.username; // Ensure req.user is populated by authMiddleware
 
     try {
-        const cart = await Cart.findOne({ user: userId });
+        const cart = await Cart.findOne({ username: username });
         if (!cart) {
             return res.status(404).json({ msg: 'Cart not found' });
         }
 
-        const itemIndex = cart.items.findIndex(item => item.product.toString() === productId);
+        const itemIndex = cart.items.findIndex(item => item.product === productName);
 
         if (itemIndex > -1) {
             cart.items.splice(itemIndex, 1);
@@ -73,18 +90,20 @@ exports.removeFromCart = async (req, res) => {
             return res.status(404).json({ msg: 'Product not found in cart' });
         }
     } catch (error) {
+        console.error(error);
         res.status(500).json({ msg: 'Server error' });
     }
 };
 
 // Clear the cart
 exports.clearCart = async (req, res) => {
-    const userId = req.user.id;
+    const username = req.params.username; // Ensure req.user is populated by authMiddleware
 
     try {
-        const cart = await Cart.findOneAndDelete({ user: userId });
+        await Cart.deleteOne({ username: username });
         res.status(200).json({ msg: 'Cart cleared successfully' });
     } catch (error) {
+        console.error(error);
         res.status(500).json({ msg: 'Server error' });
     }
 };

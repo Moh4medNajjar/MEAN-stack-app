@@ -1,4 +1,4 @@
-<div class="container-fluid">
+<div class="container-fluid" style="min-height: 100vh;">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <div class="card">
     <h4 class="text-center">Incoming Orders</h4>
@@ -9,41 +9,44 @@
         <thead>
           <tr>
             <th>Table Number</th>
-            <th>Username</th>
+            <th>Client name</th>
             <th>Order Details</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
         </thead>
         <tbody>
-          <!-- Example row with ngFor -->
           <tr *ngFor="let order of orders">
             <td>{{ order.tableNumber }}</td>
             <td>{{ order.username }}</td>
-            <td>{{ order.details }}</td>
+            <td>
+              <ul>
+                <li *ngFor="let item of order.orderDetails">
+                  {{ item.productName }} x {{ item.quantity }}
+                </li>
+              </ul>
+            </td>
             <td>
               <span [ngClass]="{
-                ' bg-danger-badge': order.status === 'Being Prepared',
-                ' bg-warning-badge': order.status === 'Ready',
-                ' bg-success-badge': order.status === 'Served'
+                'bg-danger-badge': order.status === 'Preparing',
+                'bg-warning-badge': order.status === 'Ready',
+                'bg-success-badge': order.status === 'Served'
               }">{{ order.status }}</span>
             </td>
             <td>
-              <!-- Action buttons with Font Awesome icons -->
               <div class="d-flex align-items-center justify-content-center">
-                <button class="btn btn-success btn-sm d-flex align-items-center justify-content-center" (click)="markAsServed(order)">
+                <button class="btn btn-success btn-sm d-flex align-items-center justify-content-center">
                   <i class="fas fa-pizza-slice me-1"></i> Served
                 </button>
-                <button class="btn btn-warning btn-sm d-flex align-items-center justify-content-center" (click)="markAsReady(order)">
+                <button class="btn btn-warning btn-sm d-flex align-items-center justify-content-center">
                   <i class="fa fa-check me-1"></i> Ready
                 </button>
-                <button class="btn btn-danger btn-sm d-flex align-items-center justify-content-center" (click)="markAsBeingPrepared(order)">
-                  <i class="fa fa-hourglass-half me-1"></i>Preparing
+                <button class="btn btn-danger btn-sm d-flex align-items-center justify-content-center">
+                  <i class="fa fa-hourglass-half me-1"></i> Preparing
                 </button>
               </div>
             </td>
           </tr>
-          <!-- Add more rows dynamically -->
         </tbody>
       </table>
     </div>

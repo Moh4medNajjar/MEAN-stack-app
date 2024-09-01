@@ -73,3 +73,15 @@ exports.getProductById = async (req, res) => {
         res.status(500).json({ msg: 'Server error' });
     }
 };
+
+// Get products by category
+exports.getProductsByCategory = async (req, res) => {
+    const { category } = req.params;
+
+    try {
+        const products = await Product.find({ category: category });
+        res.json(products);
+    } catch (error) {
+        res.status(500).json({ msg: 'Server error' });
+    }
+};

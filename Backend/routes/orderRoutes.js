@@ -4,20 +4,23 @@ const {
     getAllOrders,
     createOrder,
     updateOrderStatus,
-    getOrderById
+    getOrderById,
+    getNotServedOrders
 } = require('../controllers/orderController');
 const authMiddleware = require('../middleware/authMiddleware'); // Assuming you have auth middleware
 
 // Get all orders
-router.get('/', authMiddleware, getAllOrders);
+router.get('/', getAllOrders);
+
+router.get('/forWaiter', getNotServedOrders)
 
 // Create a new order
-router.post('/', authMiddleware, createOrder);
+router.post('/', createOrder);
 
 // Get an order by ID
-router.get('/:id', authMiddleware, getOrderById);
+router.get('/:id', getOrderById);
 
 // Update order status
-router.put('/:id/status', authMiddleware, updateOrderStatus);
+router.put('/:id/status', updateOrderStatus);
 
 module.exports = router;
