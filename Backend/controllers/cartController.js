@@ -95,9 +95,8 @@ exports.removeFromCart = async (req, res) => {
     }
 };
 
-// Clear the cart
 exports.clearCart = async (req, res) => {
-    const username = req.params.username; // Ensure req.user is populated by authMiddleware
+    const username = req.params.username; 
 
     try {
         await Cart.deleteOne({ username: username });

@@ -9,7 +9,7 @@ import { OrderService } from '../services/order.service';
   styleUrls: ['./panier.component.scss']
 })
 export class PanierComponent implements OnInit {
-  cartItems: any[] = []; // Adjust the type based on your cart item structure
+  cartItems: any[] = [];
   tableIndex: number | null = null;
   username: any;
 
@@ -17,11 +17,10 @@ export class PanierComponent implements OnInit {
     private route: ActivatedRoute,
     private cartService: CartService,
     private orderService: OrderService,
-    private router: Router // Inject the Router service
+    private router: Router
   ) {}
 
   ngOnInit(): void {
-    // Get the username from the route parameters
     this.route.params.subscribe(params => {
       this.username = params['username'];
       if (this.username) {
@@ -50,7 +49,7 @@ export class PanierComponent implements OnInit {
     if (this.username && this.tableIndex && this.cartItems.length > 0) {
       const orderDetails = this.cartItems.map(item => ({
         productName: item.product,
-        productID: item._id, // Adjust this if your item structure is different
+        productID: item._id,
         quantity: item.quantity
       }));
 
@@ -66,7 +65,6 @@ export class PanierComponent implements OnInit {
       this.orderService.createOrder(order).subscribe(
         response => {
           console.log('Order created successfully:', response);
-          // Clear the cart after order confirmation
           this.cartItems = [];
           this.cartService.clearCart(this.username).subscribe(
             () => {
@@ -76,7 +74,6 @@ export class PanierComponent implements OnInit {
               console.error('Error clearing cart:', error);
             }
           );
-          // Redirect to the client-dashboard
           this.router.navigate(['/client-dashboard']);
         },
         error => {
@@ -90,6 +87,5 @@ export class PanierComponent implements OnInit {
 
   proceedToCheckout(): void {
     alert('Proceeding to checkout!');
-    // Add logic to handle checkout
   }
 }
