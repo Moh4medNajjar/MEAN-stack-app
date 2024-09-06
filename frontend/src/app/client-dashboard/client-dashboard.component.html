@@ -1,6 +1,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
 <div class="container-fluid" style="min-height: 100vh;">
+  <!-- Profile Icon -->
+
   <div class="card">
+    <div class="d-flex align-items-center justify-content-between">
+      <div></div>
+      <div><p>Welcome <span style="font-weight: bold">{{username}}</span> !</p></div>
+      <i (click)="navigateToProfile()" style="cursor: pointer" class="fas fa-user ms-auto fs-3"></i>
+    </div>
     <div class="category-container">
       <div class="category-list me-4">
         <button

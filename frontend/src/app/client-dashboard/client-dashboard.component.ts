@@ -44,6 +44,10 @@ export class ClientDashboardComponent implements OnInit {
     }
   }
 
+  navigateToProfile() {
+    this.router.navigate(['/profile']);
+  }
+  
   fetchProducts(category: 'plats' | 'boissons' | 'sauces'): void {
     this.dishService.getProductsByCategory(category).subscribe({
       next: (response: Dish[]) => {
