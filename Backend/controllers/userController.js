@@ -4,6 +4,47 @@ const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
 
 
+exports.changePassword = async (req, res) => {
+    const { userId, oldPassword, newPassword, confirmNewPassword } = req.body;
+
+    // Validate request data
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    // Ensure new passwords match
+    if (newPassword !== confirmNewPassword) {
+        return res.status(400).json({ msg: 'New passwords do not match' });
+    }
+
+    try {
+        // Find the user by ID
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ msg: 'User not found' });
+        }
+
+        // Check old password
+        const isMatch = await bcrypt.compare(oldPassword, user.password);
+        if (!isMatch) {
+            return res.status(400).json({ msg: 'Old password is incorrect' });
+        }
+
+        // Hash new password
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(newPassword, salt);
+
+        // Update user password
+        user.password = hashedPassword;
+        await user.save();
+
+        res.status(200).json({ msg: 'Password updated successfully' });
+    } catch (error) {
+        console.error('Error changing password:', error);
+        res.status(500).json({ msg: 'Server error' });
+    }
+};
 // Register a new user
 exports.registerUser = async (req, res) => {
     const { username, email, password } = req.body;
@@ -68,7 +109,8 @@ exports.loginUser = async (req, res) => {
             user: {
                 id: user.id,
                 role: user.role,
-                username: user.username
+                username: user.username,
+                email: user.email,
             },
         };
 

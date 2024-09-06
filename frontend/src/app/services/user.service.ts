@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -32,4 +32,9 @@ export class UserService {
   getUserById(userId: string): Observable<any> {
     return this.http.get<any>(`${this.baseUrl}/${userId}`);
   }
+
+  changePassword(userId: string, oldPassword: string, newPassword: string, confirmNewPassword: string): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/change-password`, { userId, oldPassword, newPassword, confirmNewPassword });
+}
+
 }
