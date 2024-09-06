@@ -19,6 +19,7 @@ import { IndexComponent } from './index/index.component';
 import { OrderHistoryComponent } from './order-history/order-history.component';
 import { ProductsComponent } from './products/products.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MyOrdersComponent } from './my-orders/my-orders.component';
 
 @NgModule({
   declarations: [
@@ -36,7 +37,8 @@ import { HttpClientModule } from '@angular/common/http';
     WaiterDashboardComponent,
     IndexComponent,
     OrderHistoryComponent,
-    ProductsComponent
+    ProductsComponent,
+    MyOrdersComponent
   ],
   imports: [
     BrowserModule,

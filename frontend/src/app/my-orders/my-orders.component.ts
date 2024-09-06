@@ -1,19 +1,17 @@
-import { DatePipe } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { OrderService } from '../services/order.service';
-
+import { DatePipe } from '@angular/common';
 @Component({
-  selector: 'app-admin-dashboard',
-  templateUrl: './admin-dashboard.component.html',
-  styleUrl: './admin-dashboard.component.scss',
-  providers: [DatePipe]
+  selector: 'app-my-orders',
+  templateUrl: './my-orders.component.html',
+  styleUrl: './my-orders.component.scss',
+  providers: [DatePipe] // Add DatePipe as a provider
+
 })
-export class AdminDashboardComponent {
+export class MyOrdersComponent implements OnInit {
   orders: any[] = [];
   username: string | null = null;
-  totalIncome: number = 0;
-
 
   constructor(
     private orderService: OrderService,
@@ -25,16 +23,19 @@ export class AdminDashboardComponent {
     return this.datePipe.transform(dateString, 'MMMM d, y, h:mm a');
   }
   ngOnInit(): void {
-      this.fetchAllOrders();
-
+    this.route.paramMap.subscribe(params => {
+      this.username = params.get('username');
+      if (this.username) {
+        this.fetchOrders(this.username);
+      }
+    });
   }
 
-  fetchAllOrders(): void {
-    this.orderService.getAllOrders().subscribe({
+  fetchOrders(username: string): void {
+    this.orderService.getOrdersByUsername(username).subscribe({
       next: (orders: any[]) => {
         this.orders = orders;
         console.log("orders:", this.orders)
-        this.calculateTotalIncome();
       },
       error: (error: any) => {
         console.error('Error fetching orders:', error);
@@ -44,9 +45,5 @@ export class AdminDashboardComponent {
 
   navigateToInvoice(id: string): void {
     this.router.navigate([`/facture/${id}`]);
-  }
-
-  calculateTotalIncome(): void {
-    this.totalIncome = this.orders.reduce((sum, order) => sum + order.totalPrice, 0);
   }
 }

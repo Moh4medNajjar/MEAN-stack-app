@@ -13,6 +13,7 @@ import { ClientDashboardComponent } from './client-dashboard/client-dashboard.co
 import { ProductsComponent } from './products/products.component';
 import { WaiterDashboardComponent } from './waiter-dashboard/waiter-dashboard.component';
 import { AdminDashboardComponent } from './admin-dashboard/admin-dashboard.component';
+import { MyOrdersComponent } from './my-orders/my-orders.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/index', pathMatch: 'full' },
@@ -20,7 +21,7 @@ const routes: Routes = [
   { path: 'welcome', component: IndexComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'profile', component: ProfileComponent },
-  { path: 'facture', component: FactureComponent },
+  { path: 'facture/:id', component: FactureComponent },
   { path: 'users', component: UserManagementComponent },
   { path: 'cart/:username', component: PanierComponent },
   { path: 'payment', component: PaymentComponent },
@@ -30,6 +31,7 @@ const routes: Routes = [
   { path: 'waiter-dashboard', component: WaiterDashboardComponent },
   { path: 'index', component: IndexComponent },
   { path: 'admin-dashboard', component: AdminDashboardComponent },
+  { path: 'my-orders/:username', component: MyOrdersComponent },
 ];
 
 @NgModule({

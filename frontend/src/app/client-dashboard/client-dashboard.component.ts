@@ -21,8 +21,11 @@ export class ClientDashboardComponent implements OnInit {
   categories: ('plats' | 'boissons' | 'sauces')[] = ['plats', 'boissons', 'sauces'];
   selectedCategory: 'plats' | 'boissons' | 'sauces' = 'plats';
   dishes: Dish[] = [];
-  username :any;
+  username: any;
   userData: any;
+  showConfirmModal = false;
+  showSuccessModal = false;
+  selectedDish: Dish | undefined;
 
   constructor(
     private router: Router,
@@ -35,14 +38,11 @@ export class ClientDashboardComponent implements OnInit {
     const token = this.authService.getToken();
     if (token) {
       const decodedPayload = atob(token.split('.')[1]);
-      const userData = JSON.parse(decodedPayload);
-      console.log(userData)
-      this.userData = userData
-      this.username = userData.user.username
-      console.log("username", this.username)
-    this.fetchProducts(this.selectedCategory);
+      this.userData = JSON.parse(decodedPayload);
+      this.username = this.userData.user.username;
+      this.fetchProducts(this.selectedCategory);
+    }
   }
-}
 
   fetchProducts(category: 'plats' | 'boissons' | 'sauces'): void {
     this.dishService.getProductsByCategory(category).subscribe({
@@ -79,21 +79,51 @@ export class ClientDashboardComponent implements OnInit {
     this.router.navigate([`/cart/${this.username}`]);
     this.closeModal();
   }
-
-  addToCart(dish: Dish): void {
-    if (!dish || !dish.name || !dish.quantity || !dish.price) {
-      console.error('Dish data is incomplete');
-      return;
-    }
-
-    this.cartService.addToCart(dish.name, dish.quantity, dish.price, this.username)
-      .subscribe(
-        response => console.log('Item added to cart:', response),
-        error => console.error('Error adding item to cart:', error)
-      );
+  navigateToOrders(): void {
+    this.router.navigate([`/my-orders/${this.username}`]);
+    this.closeModal();
   }
 
   closeModal(): void {
     this.showModal = false;
+  }
+
+  addToCart(): void {
+    if (this.selectedDish) {
+      if (!this.selectedDish.name || !this.selectedDish.quantity || !this.selectedDish.price) {
+        console.error('Dish data is incomplete');
+        return;
+      }
+
+      this.cartService.addToCart(this.selectedDish.name, this.selectedDish.quantity, this.selectedDish.price, this.username)
+        .subscribe(
+          response => {
+            console.log('Item added to cart:', response);
+            this.showConfirmModal = false;
+            this.showSuccessModal = true;
+
+            // Hide the success modal after 3 seconds
+            setTimeout(() => {
+              this.showSuccessModal = false;
+            }, 1000);
+          },
+          error => console.error('Error adding item to cart:', error)
+        );
+    }
+  }
+
+  confirmAddToCart(dish: Dish): void {
+    this.selectedDish = dish;
+    this.showConfirmModal = true;
+  }
+
+  closeConfirmModal(): void {
+    this.showConfirmModal = false;
+    // Clear selectedDish when the confirmation modal is closed
+    this.selectedDish = undefined;
+  }
+
+  closeSuccessModal(): void {
+    this.showSuccessModal = false;
   }
 }

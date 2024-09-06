@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { OrderService } from '../services/order.service';
 import { UserService } from '../services/user.service';
 import { HttpClient } from '@angular/common/http';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-waiter-dashboard',
@@ -14,11 +15,27 @@ export class WaiterDashboardComponent implements OnInit {
 
   constructor(
     private ordersService: OrderService,
-    private userService: UserService
+    private orderService: OrderService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.loadOrders();
+  }
+
+  onStatusChange(orderId: string, newStatus: string): void {
+    this.orderService.updateOrderStatus(orderId, newStatus).subscribe(
+      updatedOrder => {
+        // Update the order in the list
+        const orderIndex = this.orders.findIndex(order => order._id === orderId);
+        if (orderIndex !== -1) {
+          this.orders[orderIndex] = updatedOrder;
+        }
+      },
+      error => {
+        console.error('Error updating order status', error);
+      }
+    );
   }
 
   loadOrders(): void {
@@ -30,10 +47,12 @@ export class WaiterDashboardComponent implements OnInit {
       },
       (error) => {
         console.error('Error loading orders:', error);
-        // Optionally, you can set an error message to display in the UI
-        // this.errorMessage = 'Failed to load orders. Please try again later.';
       }
     );
+
+  }
+  navigateToInvoice(id: string): void {
+    this.router.navigate([`/facture/${id}`]);
   }
 
 

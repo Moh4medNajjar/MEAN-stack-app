@@ -10,9 +10,14 @@
         >
           {{ category | titlecase }}
         </button>
-        <button class="bg-success mt-4" (click)="navigateToCart()">
-          <i class="fas fa-shopping-cart me-2"></i>Go to cart
-        </button>
+        <div class="d-flex align-items-center justify-content-center">
+          <button class="bg-success mt-4" (click)="navigateToCart()">
+            <i class="fas fa-shopping-cart me-2"></i>Go to cart
+          </button>
+          <button class="bg-success mt-4" (click)="navigateToOrders()">
+            <i class="fas fa-shopping-cart me-2"></i>My orders
+          </button>
+        </div>
       </div>
       <div class="dishes-container">
         <div *ngFor="let dish of dishes" class="dish-card">
@@ -24,20 +29,27 @@
             <input type="number" [value]="dish.quantity" readonly />
             <button (click)="increaseQuantity(dish)">+</button>
           </div>
-          <button class="btn btn-add-to-cart" (click)="addToCart(dish)">Add to Cart</button>
+          <button class="btn btn-add-to-cart" (click)="confirmAddToCart(dish)">Add to Cart</button>
         </div>
       </div>
     </div>
 
-    <!-- Modal for confirming add to cart -->
-    <div *ngIf="showModal" class="modal-background" (click)="closeModal()">
+    <!-- Confirmation Modal -->
+    <div *ngIf="showConfirmModal" class="modal-background" (click)="closeConfirmModal()">
       <div class="modal-content" (click)="$event.stopPropagation()">
-        <h4>Item Added to Cart</h4>
-        <p>The item has been successfully added to your cart.</p>
+        <h4>Confirm Addition</h4>
+        <p>Are you sure you want to add {{ selectedDish?.quantity }} of {{ selectedDish?.name }}?</p>
         <div class="modal-buttons">
-          <button class="btn btn-primary" (click)="navigateToCart()">Go to Cart</button>
-          <button class="btn btn-secondary" (click)="closeModal()">Close</button>
+          <button class="btn btn-primary" (click)="addToCart()">Yes</button>
+          <button class="btn btn-secondary" (click)="closeConfirmModal()">No</button>
         </div>
+      </div>
+    </div>
+
+    <!-- Success Modal -->
+    <div *ngIf="showSuccessModal" class="modal-background-bottom" (click)="closeSuccessModal()">
+      <div class="modal-content success d-flex align-items-center justify-content-center" (click)="$event.stopPropagation()">
+        <p class="m-0">Successfully added to cart.</p>
       </div>
     </div>
   </div>
