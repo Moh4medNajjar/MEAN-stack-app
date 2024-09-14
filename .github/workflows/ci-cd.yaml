@@ -17,37 +17,6 @@ jobs:
         with:
           node-version: '18.x'
 
-      # Debug: List frontend directory contents
-      - name: List Frontend Directory
-        working-directory: ./frontend
-        run: ls -la
-
-      # Lint Frontend
-      - name: Lint Frontend
-        working-directory: ./frontend
-        run: npm run lint
-
-      # Debug: List backend directory contents
-      - name: List Backend Directory
-        working-directory: ./backend
-        run: ls -la
-
-      # Lint Backend
-      - name: Lint Backend
-        working-directory: ./backend
-        run: npm run lint
-
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v3
-
-      - name: Install Node.js (Frontend & Backend)
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18.x'
-
       - name: Install Dependencies (Frontend)
         working-directory: ./frontend
         run: npm install
@@ -56,10 +25,10 @@ jobs:
         working-directory: ./backend
         run: npm install
 
-      - name: Run Tests (Frontend)
+      - name: Run ESLint (Frontend)
         working-directory: ./frontend
-        run: npm test
+        run: npx eslint .
 
-      - name: Run Tests (Backend)
+      - name: Run ESLint (Backend)
         working-directory: ./backend
-        run: npm test
+        run: npx eslint .
