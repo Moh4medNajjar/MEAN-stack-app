@@ -27,7 +27,7 @@ jobs:
           cd Backend
           npm ci
       - name: Lint Backend
-        run: npm run lint
+        run: cd Backend && npm run lint
       - name: Test Backend
         run: npm run test
 
