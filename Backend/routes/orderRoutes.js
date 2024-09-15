@@ -9,24 +9,24 @@ const {
     getOrderById
 } = require('../controllers/orderController');
 
-// Get all orders
-router.get('/', getAllOrders);
-
-router.get('/forWaiter', getNotServedOrders)
-
-// Create a new order
-router.post('/', createOrder);
+const authMiddleware = require('../middleware/authMiddleware')
+const roleMiddleware = require('../middleware/roleMiddleware')
 
 
-// Update order status
-router.put('/:id/status', updateOrderStatus);
+router.get('/', authMiddleware, roleMiddleware(['waiter','admin' ]), getAllOrders);
 
-router.put('/orders/:id/status', updateOrderStatus);
+router.get('/forWaiter', authMiddleware, roleMiddleware(['admin', 'waiter']), getNotServedOrders)
 
-// Get an order by ID
-router.get('/:username', getOrdersByUsername);
+router.post('/', authMiddleware, createOrder);
 
-router.get('/facture/:id', getOrderById);
+
+router.put('/:id/status', authMiddleware, roleMiddleware(['admin', 'waiter']), updateOrderStatus);
+
+router.put('/orders/:id/status', authMiddleware, roleMiddleware(['admin', 'waiter']), updateOrderStatus);
+
+router.get('/:username', authMiddleware, getOrdersByUsername);
+
+router.get('/facture/:id',  authMiddleware, getOrderById);
 
 
 

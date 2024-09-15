@@ -12,29 +12,41 @@ export class UserService {
   constructor(private http: HttpClient) {}
 
   getAllUsers(): Observable<any[]> {
-    return this.http.get<any[]>(this.baseUrl);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any[]>(this.baseUrl, { headers });
   }
 
   private waiterUrl = 'http://localhost:3000/api/users/waiters'; // Adjust the URL according to your backend
 
   createUser(user: any): Observable<any> {
-    return this.http.post<any>(this.waiterUrl, user);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post<any>(this.waiterUrl, user, { headers });
   }
 
   updateUser(id: string, user: any): Observable<any> {
-    return this.http.put<any>(`${this.baseUrl}/${id}`, user);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put<any>(`${this.baseUrl}/${id}`, user, { headers });
   }
 
   deleteUser(id: string): Observable<any> {
-    return this.http.delete<any>(`${this.baseUrl}/${id}`);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete<any>(`${this.baseUrl}/${id}`, { headers });
   }
 
   getUserById(userId: string): Observable<any> {
-    return this.http.get<any>(`${this.baseUrl}/${userId}`);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.baseUrl}/${userId}`, { headers });
   }
 
   changePassword(userId: string, oldPassword: string, newPassword: string, confirmNewPassword: string): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/change-password`, { userId, oldPassword, newPassword, confirmNewPassword });
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post<any>(`${this.baseUrl}/change-password`, { userId, oldPassword, newPassword, confirmNewPassword }, { headers });
 }
 
 }

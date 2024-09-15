@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -12,29 +12,43 @@ export class OrderService {
   constructor(private http: HttpClient) { }
 
   getOrders(): Observable<any[]> {
-    return this.http.get<any[]>(this.apiUrl);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any[]>(this.apiUrl, { headers });
   }
 
   changeStatus(orderId: string, status: string): Observable<any> {
-    return this.http.patch<any>(`${this.apiUrl}/${orderId}`, { status });
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.patch<any>(`${this.apiUrl}/${orderId}`, { status }, { headers });
   }
 
   createOrder(order: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}`, order);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.post(`${this.apiUrl}`, order, { headers });
   }
 
   updateOrderStatus(orderId: string, status: string): Observable<any> {
-    return this.http.put<any>(`${this.apiUrl}/${orderId}/status`, { status });
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.put<any>(`${this.apiUrl}/${orderId}/status`, { status }, { headers });
   }
 
   getOrdersByUsername(username: string): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/${username}`);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any[]>(`${this.apiUrl}/${username}`, { headers });
   }
   getOrderById(id: string): Observable<any[]> {
-    return this.http.get<any>(`${this.apiUrl}/facture/${id}`);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}/facture/${id}`, { headers });
   }
   getAllOrders(): Observable<any[]> {
-    return this.http.get<any>(`${this.apiUrl}`);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.get<any>(`${this.apiUrl}`, { headers });
   }
 
 

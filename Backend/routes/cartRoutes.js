@@ -7,17 +7,15 @@ const {
     clearCart
 } = require('../controllers/cartController');
 
+const authMiddleware = require('../middleware/authMiddleware')
 
-// Add an item to the cart
-router.post('/add', addToCart);
 
-// View the cart
-router.get('/items/:username', getCartItems);
+router.post('/add',  authMiddleware, addToCart);
 
-// Remove an item from the cart
-router.delete('/remove', removeFromCart);
+router.get('/items/:username', authMiddleware, getCartItems);
 
-// Clear the cart
-router.delete('/clear/:username', clearCart);
+router.delete('/remove', authMiddleware, removeFromCart);
+
+router.delete('/clear/:username', authMiddleware, clearCart);
 
 module.exports = router;

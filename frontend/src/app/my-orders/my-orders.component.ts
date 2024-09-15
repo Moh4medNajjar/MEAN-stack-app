@@ -46,4 +46,8 @@ export class MyOrdersComponent implements OnInit {
   navigateToInvoice(id: string): void {
     this.router.navigate([`/facture/${id}`]);
   }
+
+  navigateToPayment(id: string): void {
+    this.router.navigate([`/payment/${id}`]);
+  }
 }

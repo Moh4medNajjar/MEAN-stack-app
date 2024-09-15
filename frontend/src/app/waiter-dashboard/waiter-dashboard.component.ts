@@ -3,6 +3,7 @@ import { OrderService } from '../services/order.service';
 import { UserService } from '../services/user.service';
 import { HttpClient } from '@angular/common/http';
 import { Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-waiter-dashboard',
@@ -12,15 +13,26 @@ import { Router } from '@angular/router';
 export class WaiterDashboardComponent implements OnInit {
   orders: any[] = [];
   userNames: { [key: string]: string } = {}; // Object to map user IDs to usernames
+  userData: any;
+  role: any;
 
   constructor(
     private ordersService: OrderService,
     private orderService: OrderService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
+
+
 
   ngOnInit(): void {
     this.loadOrders();
+    const token = this.authService.getToken();
+    if (token) {
+      const decodedPayload = atob(token.split('.')[1]);
+      this.userData = JSON.parse(decodedPayload);
+      this.role = this.userData.user.role;
+    }
   }
 
   onStatusChange(orderId: string, newStatus: string): void {

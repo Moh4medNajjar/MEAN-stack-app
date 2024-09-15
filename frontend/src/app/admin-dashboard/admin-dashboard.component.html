@@ -1,8 +1,11 @@
 <div class="container-fluid" style="color: white; padding:20px 20px">
-  <h1>Admin Dashboard</h1>
+  @if (role === 'admin') {
+    <h1>Admin Dashboard</h1>
   <h6>Welcome admin</h6>
   <div>
-    <app-user-management></app-user-management>
+    @if (role === "admin") {
+      <app-user-management></app-user-management>
+    }
     <app-products></app-products>
     <div>
       <h3 class="text-center">All orders</h3>
@@ -47,14 +50,22 @@
         </div>
       </div>
 
-<style>
-  th, td {
-    vertical-align: middle;
-    text-align: center;
-  }
-</style>
-
-    </div>
-  </div>
+      <style>
+        th, td {
+          vertical-align: middle;
+          text-align: center;
+        }
+        </style>
 
 </div>
+</div>
+  }
+  @else {
+    <div style="min-height: 100vh ; flex-direction: column;" class="d-flex align-items-center justify-content-center">
+      <h3 style="color:red; font-weight: bold;">ACCESS DENIED.</h3>
+      <p style="color:red; font-weight: bold;">This page is restricted exclusively to admins.</p>
+    </div>
+  }
+
+</div>
+

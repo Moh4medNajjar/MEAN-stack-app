@@ -1,17 +1,21 @@
-const jwt = require('jsonwebtoken'); // Example, if using JWT
+const jwt = require('jsonwebtoken');
 
 module.exports = (req, res, next) => {
-    const token = req.headers['authorization']?.split(' ')[1]; // Example for Bearer token
+  const token = req.header('Authorization')?.replace('Bearer ', '');
 
-    if (!token) {
-        return res.status(403).json({ msg: 'No token provided' });
-    }
+  if (!token) {
+    return res.status(401).json({ message: 'Access denied, no token provided' });
+  }
 
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) {
-            return res.status(403).json({ msg: 'Failed to authenticate token' });
-        }
-        req.user = decoded;
-        next();
-    });
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
+    console.log('Decoded JWT:', decoded);  // Check if the role is in the token
+    
+    // Assign only the user object from the token
+    req.user = decoded.user;  // Accessing the `user` part directly
+    next();
+  } catch (error) {
+    console.error('Token verification failed:', error);
+    res.status(400).json({ message: 'Invalid token' });
+  }
 };

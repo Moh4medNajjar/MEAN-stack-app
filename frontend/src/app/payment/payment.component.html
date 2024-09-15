@@ -5,17 +5,17 @@
     <!-- Payment Method Selection -->
     <div class="payment-methods">
       <div class="form-check">
-        <input type="radio" id="creditCard" name="paymentMethod" value="creditCard" [(ngModel)]="selectedPaymentMethod" class="form-check-input">
-        <label for="creditCard" class="form-check-label">Credit Card</label>
+        <input type="radio" id="carte" name="paymentMethod" value="carte" [(ngModel)]="selectedPaymentMethod" class="form-check-input">
+        <label for="carte" class="form-check-label">Credit Card</label>
       </div>
       <div class="form-check">
-        <input type="radio" id="cash" name="paymentMethod" value="cash" [(ngModel)]="selectedPaymentMethod" class="form-check-input">
-        <label for="cash" class="form-check-label">Cash</label>
+        <input type="radio" id="cash" name="paymentMethod" value="espece" [(ngModel)]="selectedPaymentMethod" class="form-check-input">
+        <label for="espece" class="form-check-label">Cash</label>
       </div>
     </div>
 
     <!-- Credit Card Details -->
-    <div *ngIf="selectedPaymentMethod === 'creditCard'" class="credit-card-details">
+    <div *ngIf="selectedPaymentMethod === 'carte'" class="credit-card-details">
       <div class="form-group">
         <label for="cardNumber">Card Number</label>
         <input type="text" id="cardNumber" class="form-control" placeholder="Enter card number">
@@ -32,14 +32,35 @@
         <label for="cvv">CVV</label>
         <input type="text" id="cvv" class="form-control" placeholder="Enter CVV">
       </div>
-      <button class="btn btn-primary btn-block mt-4" (click)="payWithCreditCard()">Pay</button>
+
+      <div *ngIf="isLoading" class="loading-container">
+        <div class="spinner"></div>
+        <p>Processing payment...</p>
+      </div>
+
+      <!-- Success message section -->
+      <div *ngIf="showSuccessMessage" class="success-message">
+        <p class="text-center mt-2 " style="color: rgb(21, 229, 21)">Transaction Success</p>
+      </div>
+
+      @if (showFailureMessage) {
+        <div>
+          <p class="text-center mt-2 " style="color: rgb(244, 7, 7)">Transaction Error</p>
+        </div>
+      }
+
+
+
+      <button [disabled]="isLoading" class="btn btn-primary btn-block mt-4" (click)="payWithCreditCard()">Pay</button>
+
+
     </div>
 
+
     <!-- Cash Payment Information -->
-    <div *ngIf="selectedPaymentMethod === 'cash'" class="cash-payment-info">
+    <div *ngIf="selectedPaymentMethod === 'espece'" class="cash-payment-info">
       <p><strong>Cash Payment</strong></p>
       <p>Please prepare the exact amount for cash payment.</p>
-      <button class="btn btn-success btn-block" (click)="confirmCashPayment()">Confirm Payment</button>
+      <button class="btn btn-success btn-block" (click)="payWithCreditCard()">Confirm Payment</button>
     </div>
   </div>
-</div>

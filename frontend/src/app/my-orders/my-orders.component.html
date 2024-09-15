@@ -27,7 +27,7 @@
             </td>
             <td>€{{ order.totalPrice.toFixed(2) }}</td>
             <td>{{ order.status }}</td>
-            <td><i class="fas fa-external-link" style="cursor: pointer" (click)="navigateToInvoice(order._id)"></i></td>
+            <td><i class="fas fa-credit-card me-3" style="cursor: pointer" (click)="navigateToPayment(order._id)"></i> <i class="fas fa-external-link" style="cursor: pointer" (click)="navigateToInvoice(order._id)"></i></td>
           </tr>
         </tbody>
       </table>

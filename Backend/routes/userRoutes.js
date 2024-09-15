@@ -1,5 +1,10 @@
 const express = require('express');
 const router = express.Router();
+const authMiddleware = require('../middleware/authMiddleware');
+const roleMiddleware = require('../middleware/roleMiddleware');
+
+
+
 const {
     registerUser,
     loginUser,
@@ -9,35 +14,25 @@ const {
     getUsernameById,
     getAllWaiters,
     createWaiter,
-    changePassword // Add this
+    changePassword 
 } = require('../controllers/userController');
-const authMiddleware = require('../middleware/authMiddleware'); // Assuming you have auth middleware
 
-// Register a new user
 router.post('/register', registerUser);
 
-// User login
 router.post('/login', loginUser);
 
-// Get all waiters
-router.get('/waiters', getAllWaiters);
+router.get('/waiters', authMiddleware, roleMiddleware('admin'), getAllWaiters);
 
-// Create a new waiter
-router.post('/waiters', createWaiter);
+router.post('/waiters', authMiddleware, roleMiddleware('admin'), createWaiter);
 
-// Change user password
-router.post('/change-password', changePassword); // Add this route
+router.post('/change-password', authMiddleware, changePassword);
 
-// Update user details
-router.put('/update', authMiddleware, updateUser); // Ensure updateUser requires authentication
+router.put('/update', authMiddleware, updateUser); 
 
-// Delete a user
-router.delete('/:id', deleteUser); // Ensure deleteUser requires authentication
+router.delete('/:id', authMiddleware, roleMiddleware('admin'), deleteUser); 
 
-// Get all users
-router.get('/', getAllUsers); // Ensure getAllUsers requires authentication
+router.get('/', authMiddleware, roleMiddleware('admin'), getAllUsers); 
 
-// Get a user by ID
-router.get('/:id', getUsernameById); // Ensure getUsernameById requires authentication
+router.get('/:id', authMiddleware, getUsernameById); 
 
 module.exports = router;
