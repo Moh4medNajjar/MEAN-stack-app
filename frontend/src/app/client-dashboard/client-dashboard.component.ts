@@ -47,7 +47,7 @@ export class ClientDashboardComponent implements OnInit {
   navigateToProfile() {
     this.router.navigate(['/profile']);
   }
-  
+
   fetchProducts(category: 'plats' | 'boissons' | 'sauces'): void {
     this.dishService.getProductsByCategory(category).subscribe({
       next: (response: Dish[]) => {
@@ -129,5 +129,10 @@ export class ClientDashboardComponent implements OnInit {
 
   closeSuccessModal(): void {
     this.showSuccessModal = false;
+  }
+
+  logout(): void {
+    this.authService.logout();
+    this.router.navigate(['/login']);  // Navigate to login page after logout
   }
 }

@@ -5,9 +5,11 @@
 
   <div class="card">
     <div class="d-flex align-items-center justify-content-between">
-      <div></div>
       <div><p>Welcome <span style="font-weight: bold">{{username}}</span> !</p></div>
-      <i (click)="navigateToProfile()" style="cursor: pointer" class="fas fa-user ms-auto fs-3"></i>
+      <div class="d-flex align-items-center justify-content-center">
+        <i (click)="navigateToProfile()" style="cursor: pointer" class="me-3 fas fa-user ms-auto fs-4"></i>
+        <i (click)="logout()" style="cursor: pointer" class="fas fa-sign-out ms-auto fs-4"></i>
+      </div>
     </div>
     <div class="category-container">
       <div class="category-list me-4">
