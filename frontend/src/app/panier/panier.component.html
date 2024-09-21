@@ -15,6 +15,7 @@
             <th>Quantity</th>
             <th>Unit Price</th>
             <th>Total</th>
+            <th style="text-align: center;">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -23,6 +24,9 @@
             <td>{{ item.quantity }}</td>
             <td>{{ item.price | currency }}</td>
             <td>{{ item.quantity * item.price | currency }}</td>
+            <td style="text-align: center;">
+              <i class="fa fa-trash-can text-danger" style="cursor: pointer" (click)="removeItem(item.product)"></i>
+            </td>
           </tr>
           <!-- Add more items dynamically -->
           <tr>
@@ -41,8 +45,7 @@
 
     <!-- Action Buttons -->
     <div class="button-group">
-      <button class="btn btn-success btn-block" (click)="createOrder()">Confirm Order</button>
-      <button class="btn btn-primary btn-block" (click)="proceedToCheckout()">Proceed to Checkout</button>
+      <button style="width: 50%;" class="btn btn-success btn-block" (click)="createOrder()">Confirm Order</button>
     </div>
   </div>
 </div>

@@ -14,7 +14,7 @@ router.post('/add',  authMiddleware, addToCart);
 
 router.get('/items/:username', authMiddleware, getCartItems);
 
-router.delete('/remove', authMiddleware, removeFromCart);
+router.delete('/remove/:username/:dish', authMiddleware, removeFromCart);
 
 router.delete('/clear/:username', authMiddleware, clearCart);
 

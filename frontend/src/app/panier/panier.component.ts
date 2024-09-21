@@ -45,6 +45,20 @@ export class PanierComponent implements OnInit {
     return this.cartItems.reduce((total, item) => total + (item.quantity * item.price), 0);
   }
 
+
+  removeItem(dish: string): void {
+    this.cartService.removeFromCart(this.username, dish).subscribe({
+      next: (response) => {
+        console.log('Item removed:', response);
+        this.cartItems = this.cartItems.filter(item => item.product !== dish); // Update UI
+      },
+      error: (error) => {
+        console.error('Error removing item:', error);
+      }
+    });
+  }
+
+
   createOrder(): void {
     if (this.username && this.tableIndex && this.cartItems.length > 0) {
       const orderDetails = this.cartItems.map(item => ({

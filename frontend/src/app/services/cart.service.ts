@@ -31,5 +31,12 @@ export class CartService {
   }
 
 
+  removeFromCart(username: string, dish: string): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete(`${this.apiUrl}/remove/${username}/${dish}`, { headers });
+  }
+
+
 
 }

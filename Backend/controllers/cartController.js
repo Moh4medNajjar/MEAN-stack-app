@@ -69,31 +69,35 @@ exports.getCartItems = async (req, res) => {
 };
 
 
-// Remove an item from the cart
+// cartController.js
 exports.removeFromCart = async (req, res) => {
-    const { productName } = req.body;
-    const username = req.user.username; // Ensure req.user is populated by authMiddleware
+    const { username, dish } = req.params;
 
     try {
+        // Find the cart for the given username
         const cart = await Cart.findOne({ username: username });
         if (!cart) {
             return res.status(404).json({ msg: 'Cart not found' });
         }
 
-        const itemIndex = cart.items.findIndex(item => item.product === productName);
+        // Find the index of the dish in the cart
+        const itemIndex = cart.items.findIndex(item => item.product === dish);
 
         if (itemIndex > -1) {
+            // Remove the dish from the cart if it exists
             cart.items.splice(itemIndex, 1);
             await cart.save();
-            return res.status(200).json(cart);
+            return res.status(200).json({ msg: 'Dish removed from cart', cart });
         } else {
-            return res.status(404).json({ msg: 'Product not found in cart' });
+            return res.status(404).json({ msg: 'Dish not found in cart' });
         }
     } catch (error) {
         console.error(error);
         res.status(500).json({ msg: 'Server error' });
     }
 };
+
+
 
 exports.clearCart = async (req, res) => {
     const username = req.params.username; 
