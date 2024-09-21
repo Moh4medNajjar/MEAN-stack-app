@@ -24,17 +24,18 @@ export class CartService {
     return this.http.get<any[]>(`${this.apiUrl}/items/${username}`, { headers });
   }
 
-  clearCart(username: string): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    return this.http.delete(`${this.apiUrl}/clear/${username}`, { headers });
-  }
 
 
   removeFromCart(username: string, dish: string): Observable<any> {
     const token = localStorage.getItem('token');
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
     return this.http.delete(`${this.apiUrl}/remove/${username}/${dish}`, { headers });
+  }
+
+  clearCart(username: string): Observable<any> {
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    return this.http.delete(`${this.apiUrl}/clear/${username}`, { headers });
   }
 
 

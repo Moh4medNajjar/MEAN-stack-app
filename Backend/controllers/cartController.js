@@ -100,11 +100,20 @@ exports.removeFromCart = async (req, res) => {
 
 
 exports.clearCart = async (req, res) => {
-    const username = req.params.username; 
+    const { username } = req.params;
 
     try {
-        await Cart.deleteOne({ username: username });
-        res.status(200).json({ msg: 'Cart cleared successfully' });
+        // Find the cart for the given username
+        const cart = await Cart.findOne({ username: username });
+        if (!cart) {
+            return res.status(404).json({ msg: 'Cart not found' });
+        }
+
+        // Clear the items array
+        cart.items = [];
+        await cart.save();
+
+        return res.status(200).json({ msg: 'Cart cleared successfully', cart });
     } catch (error) {
         console.error(error);
         res.status(500).json({ msg: 'Server error' });

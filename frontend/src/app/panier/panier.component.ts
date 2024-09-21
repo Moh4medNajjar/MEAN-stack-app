@@ -99,7 +99,15 @@ export class PanierComponent implements OnInit {
     }
   }
 
-  proceedToCheckout(): void {
-    alert('Proceeding to checkout!');
+  clearCart(): void {
+    this.cartService.clearCart(this.username).subscribe({
+      next: (response) => {
+        console.log('Cart cleared:', response);
+        this.cartItems = []; // Clear the cart in the UI
+      },
+      error: (error) => {
+        console.error('Error clearing cart:', error);
+      }
+    });
   }
 }
